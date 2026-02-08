@@ -1,17 +1,13 @@
 # Plant-Co.
 This Power BI dashboard for fictional Plant Co. transforms 2022–2024 sales data into a single, powerful interactive page. Switch between total sales, gross profit, or units sold and see instant year-over-year comparisons. A simple dropdown refreshes every chart, and clear visuals uncover key trends to help managers act faster.
 
+
+# Power BI Sales Performance Dashboard – Portfolio Project
 ![Dashboard Overview](https://github.com/NicoSantos14/Plant-Co./blob/0b91055203d2afb5fc31739b3f8b83b4da4a677b/Screenshot%202026-02-05%20174612.png)
 
 
-# Power BI Sales Performance Dashboard – Portfolio Project
-
-![Power BI Dashboard Screenshot](screenshots/dashboard-overview.png)  
-*(Replace with your actual screenshot path – add images to a /screenshots folder)*
-
 An end-to-end Power BI project demonstrating data cleaning, modeling, advanced DAX, dynamic interactivity, and insightful visualizations. Built using a fictional plant sales dataset to analyze sales, gross profit, quantity trends, and year-over-year performance.
 
-This project is ideal for data analyst portfolios: it showcases real-world skills employers value, including Power Query transformations, star-schema modeling, time intelligence, parameter-based switching, conditional formatting, and business-oriented insights.
 
 ## Project Overview
 
@@ -42,7 +38,7 @@ Create an interactive performance dashboard that allows users to dynamically swi
 
 Download the data file from this repo or use your own similar dataset.
 
-## Step-by-Step Build Guide
+## Steps taken
 
 ### 1. Data Import & Cleaning (Power Query)
 
