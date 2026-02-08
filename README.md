@@ -39,20 +39,3 @@ Create an interactive performance dashboard that allows users to dynamically swi
 Download the data file from this repo or use your own similar dataset.
 
 ## Steps taken
-
-### 1. Data Import & Cleaning (Power Query)
-
-1. Open Power BI Desktop → Get Data → Excel → Select `Plant_DTS.xls`
-2. Load tables: Accounts, Plant Fact, Plant Hierarchy
-3. In Power Query Editor:
-   - Rename: Plant Hierarchy → **Dim Product**, Accounts → **Dim Account**, Plant Fact → **Fact Sales**
-   - Dim Product: Remove duplicates on Product Name (unique key)
-   - Dim Account: Remove duplicates on Account ID; rename Latitude 2 → Latitude, Country 2 → Country
-   - Fact Sales: Change Date to Date type (not Date/Time); verify numeric types for Sales, Quantity, COGS
-4. Close & Apply
-
-### 2. Supporting Tables
-
-- **Date Table** (Modeling → New Table):
-  ```dax
-  Dim Date = CALENDAR(DATE(2022, 1, 1), DATE(2024, 12, 31))
