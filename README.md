@@ -65,3 +65,11 @@ SUM('Fact Sales'[COGS])
 
 Gross Profit = 
 [Sales] - [COGS]
+
+
+Prior YTD Sales =
+CALCULATE(
+    [Sales],
+    SAMEPERIODLASTYEAR('Dim Date'[Date]),
+    'Dim Date'[In Past] = TRUE()
+)
