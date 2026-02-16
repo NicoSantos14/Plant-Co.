@@ -1,120 +1,147 @@
-Plant Sales Performance Dashboard
-Power BI Portfolio Project
-<u>Executive Summary</u>
+# Plant Sales Performance Dashboard  
+### Power BI Portfolio Project
 
-An end-to-end Power BI dashboard analyzing Sales, Gross Profit, and Quantity for a fictional plant company (2022–2024).
+---
 
-This project demonstrates applied analytics skills including data transformation, dimensional modeling, advanced DAX, and dynamic report interactivity. The dashboard is designed to support clear, data-driven business decisions.
+## Executive Summary
 
-<u>Business Objective</u>
+This project presents an end-to-end Power BI dashboard analyzing Sales, Gross Profit, and Quantity for a fictional plant company (2022–2024).
 
-This interactive report enables stakeholders to:
+The report was built to demonstrate practical analytics capabilities including data preparation, dimensional modeling, time intelligence, dynamic KPI switching, and executive-focused performance reporting.
 
-Track performance trends over time
+The objective of this dashboard is to enable fast identification of trends, profitability changes, and underperforming segments to support data-driven decision-making.
 
-Compare Year-to-Date performance versus prior year
+---
 
-Identify underperforming products and regions
+## Business Objectives
 
-Analyze gross profit fluctuations caused by rising COGS
+The dashboard allows stakeholders to:
 
-Evaluate geographic performance
+- Monitor overall sales and profitability trends  
+- Compare current performance vs prior year-to-date  
+- Identify margin compression caused by rising COGS  
+- Evaluate product-level contribution  
+- Analyze geographic performance  
+- Detect underperforming segments quickly  
 
-The focus is on actionable insight, not just visualization.
+---
 
-<u>Core Skills Demonstrated</u>
+## Skills Demonstrated
 
-Clean data transformation using Power Query
+- Data cleaning and transformation in Power Query  
+- Star schema data modeling  
+- Time intelligence using SAMEPERIODLASTYEAR  
+- Context control using calculated date flags  
+- Measure branching and reusable DAX architecture  
+- Dynamic metric switching via slicer  
+- Conditional formatting for executive visibility  
+- Interactive report design  
 
-Star schema data modeling
+---
 
-Time intelligence with controlled Prior YTD calculations
+## Dataset Overview
 
-Dynamic metric switching (Sales / Gross Profit / Quantity)
+Source file: `Plant_DTS.xls`  
+Coverage: January 2022 – April 2024  
 
-Conditional formatting for performance visibility
+### Tables
 
-Executive-level KPI design
+**Fact Sales**
+- Date  
+- Product ID  
+- Account ID  
+- Sales  
+- Quantity  
+- COGS  
+- Price  
 
-Interactive and user-focused dashboard layout
+**Dim Account**
+- Account ID  
+- Country  
+- Latitude  
+- Longitude  
 
-<u>Dataset Overview</u>
+**Dim Product**
+- Product ID  
+- Product Name  
+- Category  
 
-Source: Plant_DTS.xls
-Coverage: January 2022 – April 2024
+---
 
-Tables
+## Repository Structure
 
-Fact Sales
+```
+├── Performance Report.pbix
+├── Plant_DTS.xls
+├── README.md
+└── screenshots/
+```
 
-Date
+---
 
-Product ID
+# Build Process
 
-Account ID
+## 1. Data Preparation (Power Query)
 
-Sales
-
-Quantity
-
-COGS
-
-Price
-
-Dim Account
-
-Account ID
-
-Country
-
-Latitude
-
-Longitude
-
-Dim Product
-
-Product ID
-
-Product Name
-
-Category
-
-<u>Repository Structure</u>
-
-├── Performance Report.pbix     # Completed Power BI report
-├── Plant_DTS.xls               # Raw dataset
-├── README.md                   # Project documentation
-└── screenshots/                # Dashboard images
-Build Process
-<u>1. Data Preparation (Power Query)</u>
-
-Imported Excel dataset
-
-Renamed tables using dimensional modeling standards
-
-Removed duplicate keys
-
-Standardized data types
-
-Cleaned geographic attributes
+- Imported Excel dataset  
+- Renamed tables to dimensional modeling standards  
+- Removed duplicate keys  
+- Standardized numeric and date data types  
+- Cleaned geographic fields  
 
 Result: Structured, analysis-ready dataset.
 
-<u>2. Data Modeling</u>
+---
 
-Implemented a star schema:
+## 2. Data Modeling
 
-Fact Sales → Dim Product
+A star schema was implemented:
 
-Fact Sales → Dim Account
+- Fact Sales → Dim Product  
+- Fact Sales → Dim Account  
+- Fact Sales → Dim Date  
 
-Fact Sales → Dim Date
+This structure ensures scalable calculations and reliable filter behavior.
 
-This structure ensures scalable DAX calculations and consistent filtering behavior.
+---
 
-<u>3. Key DAX Measures</u>
-Base Measures
-'''dax
+## 3. Supporting Tables
+
+### Date Table
+
+```DAX
+Dim Date =
+CALENDAR(DATE(2022, 1, 1), DATE(2024, 12, 31))
+```
+
+### In Past Flag (Calculated Column in Dim Date)
+
+```DAX
+In Past =
+VAR LastSalesDate =
+    MAX('Fact Sales'[Date])
+VAR LastSalesDatePriorYear =
+    EOMONTH(LastSalesDate, -12)
+RETURN
+    'Dim Date'[Date] <= LastSalesDatePriorYear
+```
+
+### Slicer Table
+
+Created using Enter Data:
+
+Values  
+- Sales  
+- Gross Profit  
+- Quantity  
+
+---
+
+## 4. DAX Measures
+
+### Base Measures
+
+```DAX
 Sales =
 SUM('Fact Sales'[Sales])
 
@@ -126,28 +153,40 @@ SUM('Fact Sales'[COGS])
 
 Gross Profit =
 [Sales] - [COGS]
-'''
+```
 
+---
 
-## Prior Year-to-Date Logic
-'''dax
+### Prior Year-to-Date Measures
+
+```DAX
 Prior YTD Sales =
 CALCULATE(
     [Sales],
     SAMEPERIODLASTYEAR('Dim Date'[Date]),
     'Dim Date'[In Past] = TRUE()
-)'''
+)
 
--This implementation:
+Prior YTD Gross Profit =
+CALCULATE(
+    [Gross Profit],
+    SAMEPERIODLASTYEAR('Dim Date'[Date]),
+    'Dim Date'[In Past] = TRUE()
+)
 
--Controls future-date distortion
+Prior YTD Quantity =
+CALCULATE(
+    [Quantity],
+    SAMEPERIODLASTYEAR('Dim Date'[Date]),
+    'Dim Date'[In Past] = TRUE()
+)
+```
 
--Maintains consistent time-intelligence logic
+---
 
--Supports scalable Year-over-Year comparison
+### Dynamic Metric Switching
 
-##Dynamic Metric Switching
-'''dax
+```DAX
 Selected Metric =
 SWITCH(
     SELECTEDVALUE('Slicer Values'[Values]),
@@ -155,55 +194,77 @@ SWITCH(
     "Gross Profit", [Gross Profit],
     "Quantity",     [Quantity],
     BLANK()
-)'''
+)
 
-This enables KPI switching without duplicating report visuals.
+Prior YTD Selected =
+SWITCH(
+    SELECTEDVALUE('Slicer Values'[Values]),
+    "Sales",        [Prior YTD Sales],
+    "Gross Profit", [Prior YTD Gross Profit],
+    "Quantity",     [Prior YTD Quantity],
+    BLANK()
+)
+```
 
-<u>Dashboard Components</u>
+---
 
-KPI cards (Current vs Prior YTD)
+### Variance Analysis
 
-Treemap (Product hierarchy performance)
+```DAX
+Variance =
+[Selected Metric] - [Prior YTD Selected]
 
-Waterfall chart (Variance analysis)
+Variance % =
+DIVIDE(
+    [Variance],
+    [Prior YTD Selected]
+)
+```
 
-Combo chart (Current vs Prior YTD trends)
+---
 
-Geographic scatter map (Latitude / Longitude)
+## Dashboard Components
 
-Conditional formatting for performance signals
+- KPI cards (Current vs Prior YTD)  
+- Treemap (Product hierarchy contribution)  
+- Waterfall chart (Variance analysis)  
+- Combo chart (Trend comparison)  
+- Geographic scatter map (Latitude / Longitude)  
+- Country slicer  
+- Conditional formatting for growth vs decline  
+- Cross-filtering interactions  
 
-Dynamic report titles
+---
 
-Cross-filtering interactions
+## Example Insights
 
-<u>Example Insights</u>
+- Approximately 15% YoY gross profit decline in Q2 driven by rising COGS  
+- Top 20% of products contribute approximately 60% of total revenue  
+- Geographic analysis reveals expansion opportunities in select markets  
 
-Approximately 15% YoY gross profit decline in Q2 driven by increased COGS
+---
 
-Top 20% of products generate approximately 60% of total revenue
+## Tools & Technologies
 
-Geographic analysis reveals expansion opportunities in select regions
+- Power BI Desktop  
+- Power Query  
+- DAX  
+- Dimensional modeling principles  
 
-<u>Tools & Technologies</u>
+---
 
-Power BI Desktop
+## How to Use This Repository
 
-Power Query
+1. Clone or download the repository  
+2. Open `Performance Report.pbix` in Power BI Desktop  
+3. Review the data model and DAX measures  
+4. Interact with slicers and filters  
 
-DAX (Time intelligence, context transition, measure branching)
+---
 
-Dimensional modeling (Star schema design)
+## Contact
 
-<u>How to Use This Repository</u>
+Nicolas Nunez
+Leonia, NJ  
 
-Clone or download the repository
-
-Open Performance Report.pbix in Power BI Desktop
-
-Explore the report, model view, and DAX measures
-
-<u>Contact</u>
-
-Nicolas Nunes
-Leonia, NJ
+If this project was helpful, feel free to star the repository.
