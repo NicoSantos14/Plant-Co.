@@ -37,9 +37,31 @@ Create an interactive performance dashboard that allows users to dynamically swi
 - **Time Range**: 2022–2024 (partial)
 
 ## Set Up Model & Measures
-power-bi-dax-portfolio/
-├── Dynamic-YTD-with-Slicer/
-│   ├── README.md                ← this file
-│   ├── measures-current.txt     ← copy-paste base + dynamic measures
-│   ├── measures-prior-ytd.txt
-│   └── screenshot-dashboard.png  (optional)
+# Power BI / DAX - Dynamic Year-to-Date Metrics with Slicer Control
+
+This folder contains a clean, reusable DAX pattern for showing **current** and **prior year-to-date (YTD)** values with a dynamic metric selector (Sales, Gross Profit, Quantity).
+
+## Data Model Assumptions
+
+- Fact table: `'Fact Sales'` with columns: `Sales`, `Quantity`, `COGS`
+- Date table: `'Dim Date'` marked as date table, with column `Date`
+- `'Dim Date'[In Past]` = `TRUE` for all dates up to and including today (helps avoid future dates in YTD)
+- Slicer table: `'Slicer Values'` (disconnected) with one column `Values` containing at least:
+  - "Sales"
+  - "Gross Profit"
+  - "Quantity"
+
+## Base Measures
+
+```dax
+Sales = 
+SUM('Fact Sales'[Sales])
+
+Quantity = 
+SUM('Fact Sales'[Quantity])
+
+COGS = 
+SUM('Fact Sales'[COGS])
+
+Gross Profit = 
+[Sales] - [COGS]
