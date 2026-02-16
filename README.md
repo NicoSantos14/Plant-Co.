@@ -37,18 +37,9 @@ Create an interactive performance dashboard that allows users to dynamically swi
 - **Time Range**: 2022–2024 (partial)
 
 ## Set Up Model & Measures
--- Total Sales
-Sales =
-SUM('Fact Sales'[Sales])
-
--- Total Quantity Sold
-Quantity =
-SUM('Fact Sales'[Quantity])
-
--- Total Cost of Goods Sold
-COGS =
-SUM('Fact Sales'[COGS])
-
--- Gross Profit
-Gross Profit =
-[Sales] - [COGS]
+power-bi-dax-portfolio/
+├── Dynamic-YTD-with-Slicer/
+│   ├── README.md                ← this file
+│   ├── measures-current.txt     ← copy-paste base + dynamic measures
+│   ├── measures-prior-ytd.txt
+│   └── screenshot-dashboard.png  (optional)
