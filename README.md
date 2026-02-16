@@ -1,5 +1,13 @@
-# Plant Sales Performance Dashboard  
-### Power BI Portfolio Project
+<p align="center">
+  <h1>Plant Sales Performance Dashboard</h1>
+  <h3>Power BI Portfolio Project</h3>
+</p>
+
+---
+
+<p align="center">
+  <img src="https://github.com/NicoSantos14/Plant-Co./blob/6f4e6869638252443628110e71dc053a444affa7/Screenshot%202026-02-05%20174612.png" width="900">
+</p>
 
 ---
 
@@ -7,42 +15,42 @@
 
 This project presents an end-to-end Power BI dashboard analyzing Sales, Gross Profit, and Quantity for a fictional plant company (2022–2024).
 
-The report was built to demonstrate practical analytics capabilities including data preparation, dimensional modeling, time intelligence, dynamic KPI switching, and executive-focused performance reporting.
+The report demonstrates practical analytics capabilities including data preparation, dimensional modeling, time intelligence, dynamic KPI switching, and executive-level performance reporting.
 
-The objective of this dashboard is to enable fast identification of trends, profitability changes, and underperforming segments to support data-driven decision-making.
+The goal of the dashboard is to enable rapid identification of trends, margin changes, and underperforming segments to support informed business decisions.
 
 ---
 
 ## Business Objectives
 
-The dashboard allows stakeholders to:
+The dashboard enables stakeholders to:
 
-- Monitor overall sales and profitability trends  
-- Compare current performance vs prior year-to-date  
-- Identify margin compression caused by rising COGS  
+- Monitor sales and profitability trends  
+- Compare current performance versus prior year-to-date  
+- Identify gross profit decline caused by rising COGS  
 - Evaluate product-level contribution  
 - Analyze geographic performance  
-- Detect underperforming segments quickly  
+- Detect underperforming regions quickly  
 
 ---
 
 ## Skills Demonstrated
 
-- Data cleaning and transformation in Power Query  
-- Star schema data modeling  
-- Time intelligence using SAMEPERIODLASTYEAR  
-- Context control using calculated date flags  
+- Data transformation using Power Query  
+- Star schema modeling  
+- Time intelligence with SAMEPERIODLASTYEAR  
+- Controlled date filtering using calculated flags  
 - Measure branching and reusable DAX architecture  
 - Dynamic metric switching via slicer  
 - Conditional formatting for executive visibility  
-- Interactive report design  
+- Interactive dashboard design  
 
 ---
 
 ## Dataset Overview
 
-Source file: `Plant_DTS.xls`  
-Coverage: January 2022 – April 2024  
+**Source:** `Plant_DTS.xls`  
+**Coverage:** January 2022 – April 2024  
 
 ### Tables
 
