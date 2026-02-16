@@ -53,7 +53,7 @@ This folder contains a clean, reusable DAX pattern for showing **current** and *
 
 ## Base Measures
 
-```dax
+
 Sales = 
 SUM('Fact Sales'[Sales])
 
@@ -64,7 +64,8 @@ COGS =
 SUM('Fact Sales'[COGS])
 
 Gross Profit =
-[Sales] - [COGS] '''
+[Sales] - [COGS]
+
 
 ## Prior YTD
 
