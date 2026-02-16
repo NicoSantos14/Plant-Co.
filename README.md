@@ -1,58 +1,120 @@
-# Plant-Co.
-This Power BI dashboard for fictional Plant Co. transforms 2022–2024 sales data into a single, powerful interactive page. Switch between total sales, gross profit, or units sold and see instant year-over-year comparisons. A simple dropdown refreshes every chart, and clear visuals uncover key trends to help managers act faster.
+Plant Sales Performance Dashboard
+Power BI Portfolio Project
+<u>Executive Summary</u>
 
+An end-to-end Power BI dashboard analyzing Sales, Gross Profit, and Quantity for a fictional plant company (2022–2024).
 
-# Power BI Sales Performance Dashboard – Portfolio Project
-![Dashboard Overview](https://github.com/NicoSantos14/Plant-Co./blob/0b91055203d2afb5fc31739b3f8b83b4da4a677b/Screenshot%202026-02-05%20174612.png)
+This project demonstrates applied analytics skills including data transformation, dimensional modeling, advanced DAX, and dynamic report interactivity. The dashboard is designed to support clear, data-driven business decisions.
 
+<u>Business Objective</u>
 
-An end-to-end Power BI project demonstrating data cleaning, modeling, advanced DAX, dynamic interactivity, and insightful visualizations. Built using a fictional plant sales dataset to analyze sales, gross profit, quantity trends, and year-over-year performance.
+This interactive report enables stakeholders to:
 
+Track performance trends over time
 
-## Project Overview
+Compare Year-to-Date performance versus prior year
 
-**Business Objective**  
-Create an interactive performance dashboard that allows users to dynamically switch between key metrics (Sales, Gross Profit, Quantity) and compare current vs. prior year-to-date performance. Highlight growth/decline areas, product hierarchies, geographic trends, and variances.
+Identify underperforming products and regions
 
-**Key Features**
-- Dynamic metric switching via slicer (no duplicate pages needed)
-- Accurate YTD comparisons with future-month filtering
-- Conditional formatting for instant insight detection
-- Advanced visuals: treemaps, waterfalls, combo charts, geographic scatter
-- Clean data model and organized measures
+Analyze gross profit fluctuations caused by rising COGS
 
-**Tools & Technologies**
-- Power BI Desktop
-- Power Query (data transformation)
-- DAX (measures & calculated columns)
-- Excel (source data)
+Evaluate geographic performance
 
-## Dataset
+The focus is on actionable insight, not just visualization.
 
-- **Source**: `Plant_DTS.xls` (Excel workbook)
-- **Tables**:
-  - Fact Sales – Transaction-level sales data (Date, Product ID, Account ID, Sales, Quantity, COGS, etc.)
-  - Dim Account – Customer/account details (Account ID, Country, Latitude, Longitude, etc.)
-  - Dim Product – Product hierarchy (Product ID, Product Name, Category, etc.)
-- **Time Range**: 2022–2024 (partial)
+<u>Core Skills Demonstrated</u>
 
-## Set Up Model & Measures
-# Power BI / DAX - Dynamic Year-to-Date Metrics with Slicer Control
+Clean data transformation using Power Query
 
-This folder contains a clean, reusable DAX pattern for showing **current** and **prior year-to-date (YTD)** values with a dynamic metric selector (Sales, Gross Profit, Quantity).
+Star schema data modeling
 
-## Data Model Assumptions
+Time intelligence with controlled Prior YTD calculations
 
-- Fact table: `'Fact Sales'` with columns: `Sales`, `Quantity`, `COGS`
-- Date table: `'Dim Date'` marked as date table, with column `Date`
-- `'Dim Date'[In Past]` = `TRUE` for all dates up to and including today (helps avoid future dates in YTD)
-- Slicer table: `'Slicer Values'` (disconnected) with one column `Values` containing at least:
-  - "Sales"
-  - "Gross Profit"
-  - "Quantity"
+Dynamic metric switching (Sales / Gross Profit / Quantity)
 
-## Base Measures
+Conditional formatting for performance visibility
 
+Executive-level KPI design
+
+Interactive and user-focused dashboard layout
+
+<u>Dataset Overview</u>
+
+Source: Plant_DTS.xls
+Coverage: January 2022 – April 2024
+
+Tables
+
+Fact Sales
+
+Date
+
+Product ID
+
+Account ID
+
+Sales
+
+Quantity
+
+COGS
+
+Price
+
+Dim Account
+
+Account ID
+
+Country
+
+Latitude
+
+Longitude
+
+Dim Product
+
+Product ID
+
+Product Name
+
+Category
+
+<u>Repository Structure</u>
+
+├── Performance Report.pbix     # Completed Power BI report
+├── Plant_DTS.xls               # Raw dataset
+├── README.md                   # Project documentation
+└── screenshots/                # Dashboard images
+Build Process
+<u>1. Data Preparation (Power Query)</u>
+
+Imported Excel dataset
+
+Renamed tables using dimensional modeling standards
+
+Removed duplicate keys
+
+Standardized data types
+
+Cleaned geographic attributes
+
+Result: Structured, analysis-ready dataset.
+
+<u>2. Data Modeling</u>
+
+Implemented a star schema:
+
+Fact Sales → Dim Product
+
+Fact Sales → Dim Account
+
+Fact Sales → Dim Date
+
+This structure ensures scalable DAX calculations and consistent filtering behavior.
+
+<u>3. Key DAX Measures</u>
+Base Measures
+'''dax
 Sales =
 SUM('Fact Sales'[Sales])
 
@@ -64,54 +126,84 @@ SUM('Fact Sales'[COGS])
 
 Gross Profit =
 [Sales] - [COGS]
+'''
 
 
-
-## Prior YTD
-
+## Prior Year-to-Date Logic
+'''dax
 Prior YTD Sales =
 CALCULATE(
     [Sales],
     SAMEPERIODLASTYEAR('Dim Date'[Date]),
     'Dim Date'[In Past] = TRUE()
-)
+)'''
 
+-This implementation:
 
-### 3. Set Up Model & Measures (Simplified)
-- Create relationships (in Model view):
-  - Fact Sales[Product ID] → Dim Product[Product ID]
-  - Fact Sales[Account ID] → Dim Account[Account ID]
-  - Fact Sales[Date] → Dim Date[Date]
+-Controls future-date distortion
 
-- Base measures (create in a new table called Measures):
-  Sales        = SUM('Fact Sales'[Sales])
-  Quantity     = SUM('Fact Sales'[Quantity])
-  COGS         = SUM('Fact Sales'[COGS])
-  Gross Profit = [Sales] - [COGS]
+-Maintains consistent time-intelligence logic
 
-- Prior YTD measures (one example — copy pattern for others):
-  Prior YTD Sales = 
-  CALCULATE(
-      [Sales],
-      SAMEPERIODLASTYEAR('Dim Date'[Date]),
-      'Dim Date'[In Past] = TRUE
-  )
-  (Repeat for Gross Profit and Quantity by replacing [Sales])
+-Supports scalable Year-over-Year comparison
 
-- Dynamic switch measures:
-  Selected Metric = 
-  SWITCH(
-      SELECTEDVALUE('Slicer Values'[Values]),
-      "Sales",        [Sales],
-      "Gross Profit", [Gross Profit],
-      "Quantity",     [Quantity]
-  )
+##Dynamic Metric Switching
+'''dax
+Selected Metric =
+SWITCH(
+    SELECTEDVALUE('Slicer Values'[Values]),
+    "Sales",        [Sales],
+    "Gross Profit", [Gross Profit],
+    "Quantity",     [Quantity],
+    BLANK()
+)'''
 
-  Prior YTD Selected = 
-  SWITCH(
-      SELECTEDVALUE('Slicer Values'[Values]),
-      "Sales",        [Prior YTD Sales],
-      "Gross Profit", [Prior YTD Gross Profit],
-      "Quantity",     [Prior YTD Quantity]
-  )
+This enables KPI switching without duplicating report visuals.
 
+<u>Dashboard Components</u>
+
+KPI cards (Current vs Prior YTD)
+
+Treemap (Product hierarchy performance)
+
+Waterfall chart (Variance analysis)
+
+Combo chart (Current vs Prior YTD trends)
+
+Geographic scatter map (Latitude / Longitude)
+
+Conditional formatting for performance signals
+
+Dynamic report titles
+
+Cross-filtering interactions
+
+<u>Example Insights</u>
+
+Approximately 15% YoY gross profit decline in Q2 driven by increased COGS
+
+Top 20% of products generate approximately 60% of total revenue
+
+Geographic analysis reveals expansion opportunities in select regions
+
+<u>Tools & Technologies</u>
+
+Power BI Desktop
+
+Power Query
+
+DAX (Time intelligence, context transition, measure branching)
+
+Dimensional modeling (Star schema design)
+
+<u>How to Use This Repository</u>
+
+Clone or download the repository
+
+Open Performance Report.pbix in Power BI Desktop
+
+Explore the report, model view, and DAX measures
+
+<u>Contact</u>
+
+Nicolas Nunes
+Leonia, NJ
