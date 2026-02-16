@@ -36,6 +36,8 @@ Create an interactive performance dashboard that allows users to dynamically swi
   - Dim Product – Product hierarchy (Product ID, Product Name, Category, etc.)
 - **Time Range**: 2022–2024 (partial)
 
-Download the data file from this repo or use your own similar dataset.
-
-## Steps taken
+## Set Up Model & Measures
+-Sales        = SUM('Fact Sales'[Sales])
+-Quantity     = SUM('Fact Sales'[Quantity])
+-COGS         = SUM('Fact Sales'[COGS])
+-Gross Profit = [Sales] - [COGS]
