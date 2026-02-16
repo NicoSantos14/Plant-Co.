@@ -76,3 +76,42 @@ CALCULATE(
     'Dim Date'[In Past] = TRUE()
 )
 
+
+### 3. Set Up Model & Measures (Simplified)
+- Create relationships (in Model view):
+  - Fact Sales[Product ID] → Dim Product[Product ID]
+  - Fact Sales[Account ID] → Dim Account[Account ID]
+  - Fact Sales[Date] → Dim Date[Date]
+
+- Base measures (create in a new table called Measures):
+  Sales        = SUM('Fact Sales'[Sales])
+  Quantity     = SUM('Fact Sales'[Quantity])
+  COGS         = SUM('Fact Sales'[COGS])
+  Gross Profit = [Sales] - [COGS]
+
+- Prior YTD measures (one example — copy pattern for others):
+  Prior YTD Sales = 
+  CALCULATE(
+      [Sales],
+      SAMEPERIODLASTYEAR('Dim Date'[Date]),
+      'Dim Date'[In Past] = TRUE
+  )
+  (Repeat for Gross Profit and Quantity by replacing [Sales])
+
+- Dynamic switch measures:
+  Selected Metric = 
+  SWITCH(
+      SELECTEDVALUE('Slicer Values'[Values]),
+      "Sales",        [Sales],
+      "Gross Profit", [Gross Profit],
+      "Quantity",     [Quantity]
+  )
+
+  Prior YTD Selected = 
+  SWITCH(
+      SELECTEDVALUE('Slicer Values'[Values]),
+      "Sales",        [Prior YTD Sales],
+      "Gross Profit", [Prior YTD Gross Profit],
+      "Quantity",     [Prior YTD Quantity]
+  )
+
