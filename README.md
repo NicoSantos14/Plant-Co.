@@ -63,9 +63,10 @@ SUM('Fact Sales'[Quantity])
 COGS = 
 SUM('Fact Sales'[COGS])
 
-Gross Profit = 
-[Sales] - [COGS]
+Gross Profit =
+[Sales] - [COGS] '''
 
+## Prior YTD
 
 Prior YTD Sales =
 CALCULATE(
